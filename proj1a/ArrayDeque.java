@@ -1,18 +1,18 @@
 public class ArrayDeque<T>  {
     private int size;
     private T[] items;
-    ArrayDeque() {
+    public ArrayDeque() {
         size = 0;
         items = (T []) new Object[8];
     }
-    public void resize(int capacity){
+    private void resize( int capacity ){
         T[] tmpItems = (T []) new Object[capacity];
         System.arraycopy(items, 0, tmpItems, 0, items.length);
         items = tmpItems;
     }
-    public void addFirst(T item){
-        if(size==items.length){
-            resize(size*2);
+    public void addFirst( T item ){
+        if( size == items.length ){
+            resize(size * 2);
         }
         T[] tmpItems = (T[]) new Object[size];
         System.arraycopy(items,0,tmpItems,1,items.length);

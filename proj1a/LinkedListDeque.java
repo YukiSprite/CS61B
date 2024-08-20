@@ -1,5 +1,5 @@
 public class LinkedListDeque<T> {
-    public class Node{
+    private class Node{
         T value;
         Node next;
         Node prev;
@@ -45,7 +45,7 @@ public class LinkedListDeque<T> {
         size++;
     }
     public boolean isEmpty(){
-        return head==null;
+        return size==0;
     }
     public int size(){
         return size;
@@ -77,7 +77,7 @@ public class LinkedListDeque<T> {
         Node p = head;
         return realGetRecursive(index,p);
     }
-    public T realGetRecursive(int index,Node p){
+    private T realGetRecursive(int index,Node p){
         if (index > 0) {
             return realGetRecursive(index - 1, p.next);
         }
