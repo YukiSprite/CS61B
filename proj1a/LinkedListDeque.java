@@ -63,7 +63,7 @@ public class LinkedListDeque<T> {
     }
     public T removeLast(){
         T tmp = last.value;
-        last.prev = last;
+        last = last.prev;
         size--;
         return tmp;
     }
