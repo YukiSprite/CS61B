@@ -56,14 +56,32 @@ public class LinkedListDeque<T> {
         }
     }
     public T removeFirst(){
+        if(head==null){
+            return null;
+        }
         T tmp = head.value;
-        head = head.next;
+        if(head==last){
+            head = null;
+            last = null;
+        }
+        else{
+            head = head.next;
+        }
         size--;
         return tmp;
     }
     public T removeLast(){
+        if(last==null){
+            return null;
+        }
         T tmp = last.value;
-        last = last.prev;
+        if(head==last){
+            head = null;
+            last = null;
+        }
+        else{
+            last = last.prev;
+        }
         size--;
         return tmp;
     }
