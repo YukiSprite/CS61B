@@ -58,11 +58,13 @@ public class LinkedListDeque<T> {
     public T removeFirst(){
         T tmp = head.value;
         head = head.next;
+        size--;
         return tmp;
     }
     public T removeLast(){
         T tmp = last.value;
         last.prev = last;
+        size--;
         return tmp;
     }
     public T get(int index){
@@ -70,6 +72,7 @@ public class LinkedListDeque<T> {
         Node p = head;
         while(i<index){
             p = p.next;
+            i++;
         }
         return p.value;
     }
