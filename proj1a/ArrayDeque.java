@@ -41,6 +41,7 @@ public class ArrayDeque<T>  {
             tail = 0;
         }
         items[tail] = item;
+        size++;
     }
     public boolean isEmpty(){
         return size==0;
