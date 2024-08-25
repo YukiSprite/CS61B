@@ -18,6 +18,8 @@ public class Palindrome {
             if (word.charAt(first) != word.charAt(last)) {
                 return false;
             }
+            first++;
+            last--;
         }
         return true;
     }
