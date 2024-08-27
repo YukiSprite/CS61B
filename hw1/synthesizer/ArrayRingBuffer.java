@@ -78,14 +78,6 @@ public class ArrayRingBuffer<T>  extends AbstractBoundedQueue<T> {
         return rb[first];
         // TODO: Return the first item. None of your instance variables should change.
     }
-    @Override
-    public int fillCount() {
-        return fillCount;
-    }
-    @Override
-    public int capacity(){
-        return capacity;
-    }
     // TODO: When you get to part 5, implement the needed code to support iteration.
     @Override
     public Iterator<T> iterator() {
