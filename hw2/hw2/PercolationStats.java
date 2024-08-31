@@ -11,21 +11,21 @@ public class PercolationStats {
         }
         this.T = T;
         q = new double[T];
-            for(int i = 0;i < T;i++) {
-                Percolation percolation = pf.make(N);
-                while(!percolation.percolates()) {
-                    int x = StdRandom.uniform(0,N);
-                    int y  = StdRandom.uniform(0,N);
-                    if(!percolation.isOpen(x, y)) {
-                        percolation.open(x,y);
-                    }
+        for (int i = 0; i < T; i++) {
+            Percolation percolation = pf.make(N);
+            while(!percolation.percolates()) {
+                int x = StdRandom.uniform(0, N);
+                int y  = StdRandom.uniform(0, N);
+                if (!percolation.isOpen(x, y)) {
+                    percolation.open(x,y);
                 }
-                q[i] = percolation.numberOfOpenSites();
             }
+            q[i] = percolation.numberOfOpenSites();
+        }
     }  // perform T independent experiments on an N-by-N grid
     public double mean() {
         double total = 0;
-        for(int i=0;i<T;i++) {
+        for (int i = 0; i < T; i++) {
             total += q[i];
         }
         return total / T;

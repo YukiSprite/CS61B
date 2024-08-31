@@ -2,7 +2,7 @@ package hw2;
 
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
-import java.util.Arrays;
+
 
 public class Percolation {
     private boolean[][] isPercolated;
@@ -10,25 +10,31 @@ public class Percolation {
     private int numberOfOpenSites;
     private WeightedQuickUnionUF uf;
     public Percolation(int N) {
-        if(N <= 0) throw new java.lang.IllegalArgumentException();
+        if (N <= 0) {
+            throw new java.lang.IllegalArgumentException();
+        }
         isPercolated = new boolean[N][N];
-        for(int i = 0; i < N; i++) {
-            for(int j = 0; j < N; j++) {
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
                 isPercolated[i][j] = false;
             }
         }
         numberOfOpenSites = 0;
         size = N;
-        uf = new WeightedQuickUnionUF(N*N+2);
+        uf = new WeightedQuickUnionUF(N * N + 2);
     }               // create N-by-N grid, with all sites initially blocked
     public void open(int row, int col) {
         if (row < 0 || row >= size || col < 0 || col >= size) {
             throw new java.lang.IndexOutOfBoundsException();
         }
-        if (isPercolated[row][col]) return;
+        numberOfOpenSites++;
+//        试试这样是否可以
+        if (isPercolated[row][col]){
+            return;
+        }
 
         isPercolated[row][col] = true;
-        numberOfOpenSites++;
+
 
         int current = row * size + col;
 
@@ -57,7 +63,7 @@ public class Percolation {
         }
     }      // open the site (row, col) if it is not open already
     public boolean isOpen(int row, int col) {
-        if(row < 0||row > size-1||col < 0|| col > size-1) {
+        if (row < 0 || row > size-1 || col < 0 || col > size-1) {
             throw new java.lang.IndexOutOfBoundsException();
         }
         return isPercolated[row][col];
@@ -66,7 +72,7 @@ public class Percolation {
         if(row < 0||row > size-1||col < 0|| col > size-1) {
             throw new java.lang.IndexOutOfBoundsException();
         }
-        return !(isPercolated[row][col]);
+        return isOpen(row, col) && uf.connected(row * size + col, size * size );
     } // is the site (row, col) full?
     public int numberOfOpenSites() {
         return numberOfOpenSites;
@@ -74,7 +80,7 @@ public class Percolation {
     public boolean percolates() {
         return uf.connected(size * size, size * size + 1);
     }             // does the system percolate?
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
     }   // use for unit testing (not required)
 }
