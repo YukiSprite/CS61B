@@ -44,7 +44,18 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      *  or null if this map contains no mapping for the key.
      */
     private V getHelper(K key, Node p) {
-        throw new UnsupportedOperationException();
+        if (p == null) {
+            return null;
+        }
+        if (key.compareTo(p.key) < 0) {
+            return getHelper(key, p.left);
+        }else if (key.compareTo(p.key) > 0) {
+            return getHelper(key, p.right);
+        }else if (key.compareTo(p.key) == 0) {
+            return p.value;
+        }else {
+            return null;
+        }
     }
 
     /** Returns the value to which the specified key is mapped, or null if this
@@ -52,14 +63,27 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     @Override
     public V get(K key) {
-        throw new UnsupportedOperationException();
+        return getHelper(key, root);
     }
 
     /** Returns a BSTMap rooted in p with (KEY, VALUE) added as a key-value mapping.
       * Or if p is null, it returns a one node BSTMap containing (KEY, VALUE).
      */
     private Node putHelper(K key, V value, Node p) {
-        throw new UnsupportedOperationException();
+        if(p == null) {
+            size++;
+            return new Node(key, value);
+        }
+        else if (key.compareTo(p.key) < 0) {
+            return putHelper(key, value, p.left);
+        }
+        else if (key.compareTo(p.key) > 0) {
+            return putHelper(key, value, p.right);
+        }
+        else {
+            p.value = value;
+            return p;
+        }
     }
 
     /** Inserts the key KEY
@@ -67,13 +91,13 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     @Override
     public void put(K key, V value) {
-        throw new UnsupportedOperationException();
+        putHelper(key, value, root);
     }
 
     /* Returns the number of key-value mappings in this map. */
     @Override
     public int size() {
-        throw new UnsupportedOperationException();
+        return size;
     }
 
     //////////////// EVERYTHING BELOW THIS LINE IS OPTIONAL ////////////////
@@ -84,13 +108,79 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         throw new UnsupportedOperationException();
     }
 
+    private V removeHelper(Node p) {
+        // 找到右子树中的最小节点（后继节点）
+        Node tmp = p.right;
+        Node parent = p; // 记录后继节点的父节点
+        while (tmp.left != null) {
+            parent = tmp;
+            tmp = tmp.left;
+        }
+
+        // 将要删除的节点的值替换为后继节点的值
+        V oldValue = p.value;
+        p.value = tmp.value;
+
+        // 删除后继节点
+        if (parent.left == tmp) {
+            parent.left = tmp.right;  // 如果后继节点有右子节点，将其连接到父节点的左子树
+        } else {
+            parent.right = tmp.right; // 如果后继节点是父节点的右子节点，直接删除它
+        }
+
+        return oldValue;
+    }
+
     /** Removes KEY from the tree if present
      *  returns VALUE removed,
      *  null on failed removal.
      */
     @Override
     public V remove(K key) {
-        throw new UnsupportedOperationException();
+        Node p = root;
+        Node parent = null;
+
+        // 查找要删除的节点及其父节点
+        while (p != null) {
+            if (key.compareTo(p.key) == 0) {
+                break;
+            }
+            parent = p;
+            if (key.compareTo(p.key) < 0) {
+                p = p.left;
+            } else {
+                p = p.right;
+            }
+        }
+
+        // 如果没有找到该节点，返回 null
+        if (p == null) {
+            return null;
+        }
+
+        // 处理有两个子节点的情况
+        if (p.left != null && p.right != null) {
+            return removeHelper(p);
+        }
+
+        // 处理有一个子节点或没有子节点的情况
+        Node child = (p.left != null) ? p.left : p.right;
+
+        // 如果要删除的是根节点
+        if (parent == null) {
+            root = child;  // 如果根节点没有子节点，则 root 设为 null
+        } else {
+            // 如果要删除的是左子节点
+            if (parent.left == p) {
+                parent.left = child;
+            }
+            // 如果要删除的是右子节点
+            else {
+                parent.right = child;
+            }
+        }
+
+        return p.value;
     }
 
     /** Removes the key-value entry for the specified key only if it is
