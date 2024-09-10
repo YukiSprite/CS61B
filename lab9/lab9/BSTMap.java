@@ -51,10 +51,8 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
             return getHelper(key, p.left);
         }else if (key.compareTo(p.key) > 0) {
             return getHelper(key, p.right);
-        }else if (key.compareTo(p.key) == 0) {
-            return p.value;
         }else {
-            return null;
+            return p.value;
         }
     }
 
@@ -70,20 +68,26 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
       * Or if p is null, it returns a one node BSTMap containing (KEY, VALUE).
      */
     private Node putHelper(K key, V value, Node p) {
-        if(p == null) {
+        // 如果当前节点为空，创建一个新节点并返回
+        if (p == null) {
             size++;
             return new Node(key, value);
         }
-        else if (key.compareTo(p.key) < 0) {
-            return putHelper(key, value, p.left);
+
+        // 如果 key 小于当前节点的 key，递归插入到左子树
+        if (key.compareTo(p.key) < 0) {
+            p.left = putHelper(key, value, p.left); // 更新左子树
         }
+        // 如果 key 大于当前节点的 key，递归插入到右子树
         else if (key.compareTo(p.key) > 0) {
-            return putHelper(key, value, p.right);
+            p.right = putHelper(key, value, p.right); // 更新右子树
         }
+        // 如果 key 相等，更新当前节点的值
         else {
             p.value = value;
-            return p;
         }
+
+        return p; // 返回当前节点
     }
 
     /** Inserts the key KEY
@@ -91,8 +95,9 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     @Override
     public void put(K key, V value) {
-        putHelper(key, value, root);
+        root = putHelper(key, value, root); // 将更新后的树赋值给根节点
     }
+
 
     /* Returns the number of key-value mappings in this map. */
     @Override
